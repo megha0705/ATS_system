@@ -56,7 +56,7 @@ public class PdfHandler {
    ParseContext context = new ParseContext();
 
    // PDF document can be parsed using the PDFparser
-   // class
+   
    //it opens the pdf and look at the content inside
    PDFParser pdfparser = new PDFParser();
         String author = data.get(Metadata.COMMENT);
