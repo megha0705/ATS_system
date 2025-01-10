@@ -16,7 +16,7 @@ public class Controller {
     public String atsSystem(@RequestParam String name , @RequestParam String email, @RequestParam MultipartFile file) throws Exception{
         s.candidateDetail(name, email);
         PdfHandler pdf = new PdfHandler();
-       String str =  pdf.saveResume(file);
+       String str =  pdf.saveResume(file) ;
 
         return "saved successfully" +  str ;
     }
