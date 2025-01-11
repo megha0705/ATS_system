@@ -1,5 +1,7 @@
 package com.example.demo;
 import java.io.*;
+import java.util.HashMap;
+
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.sax.BodyContentHandler;
@@ -59,7 +61,7 @@ public class PdfHandler {
    
    //it opens the pdf and look at the content inside
    PDFParser pdfparser = new PDFParser();
-        String author = data.get(Metadata.COMMENT);
+       // String author = data.get(Metadata.MESSAGE_RAW_HEADER_PREFIX);
    // Method parse invoked on PDFParser class
    //it opens the file and stores teh data from pdf to contenthandler and  extract meta data store in data , 
    //context tells the parser if there are any special instructions or tools to use while reading
@@ -68,8 +70,17 @@ public class PdfHandler {
 
    // Printing the contents of the pdf document
    // using toString() method in java
-   System.out.println("Extracting contents :"+ "THE COMMENT IS "+author
-                      + contenthandler.toString());
+  /*System.out.println("Extracting contents :"+
+                       contenthandler.toString());*/
+
+String line = contenthandler.toString();
+
+String str1 [] =  line.toLowerCase().split("\n");
+HashMap <String , String> sectionHeader = new HashMap<>();
+for(int i =0; i < str1.length; i++){
+    System.out.println(str1[i] );
+}
+
 
     }
 }
