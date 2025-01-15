@@ -73,14 +73,16 @@ public class PdfHandler {
   /*System.out.println("Extracting contents :"+
                        contenthandler.toString());*/
 
-String line = contenthandler.toString();
+/*String line = contenthandler.toString();
 
 String str1 [] =  line.toLowerCase().split("\n");
 HashMap <String , String> sectionHeader = new HashMap<>();
 for(int i =0; i < str1.length; i++){
-    System.out.println(str1[i] );
+    System.out.println(str1[i]);
 }
-
+*/
+DataExtraction dataExtract = new DataExtraction();
+dataExtract.headerExtract(contenthandler.toString());
 
     }
 }
