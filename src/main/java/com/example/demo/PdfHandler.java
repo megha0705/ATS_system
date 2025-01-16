@@ -7,12 +7,16 @@ import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 //import org.hibernate.boot.Metadata;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
-
+@Service
 public class PdfHandler {
+    @Autowired
+    private DataExtraction dataExtract;
     public String saveResume(MultipartFile file) throws Exception{
         String directory =  "C:/Users/Reshmi Chakraborty/Desktop/coding/projects/ATS_system/CandidateResume";
         File file1 = new File(directory);
@@ -81,7 +85,7 @@ for(int i =0; i < str1.length; i++){
     System.out.println(str1[i]);
 }
 */
-DataExtraction dataExtract = new DataExtraction();
+//DataExtraction dataExtract = new DataExtraction();
 dataExtract.headerExtract(contenthandler.toString());
 
     }
