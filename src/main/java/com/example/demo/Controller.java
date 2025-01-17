@@ -1,25 +1,37 @@
 package com.example.demo;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 public class Controller {
-    @Autowired
 
+    @Autowired
     service s;
+
     @Autowired
     PdfHandler pdf;
-    @PostMapping("ats")
-    public String atsSystem(@RequestParam String name , @RequestParam String email, @RequestParam MultipartFile file) throws Exception{
-        s.candidateDetail(name, email);
-        
-       String str =  pdf.saveResume(file) ;
 
-        return "saved successfully" +  str ;
+    @PostMapping("ats")
+    public RedirectView atsSystem(@RequestParam String name , @RequestParam String email, @RequestParam MultipartFile file) throws Exception{
+        s.candidateDetail(name, email);
+        pdf.saveResume(file) ;
+        return new RedirectView("/jobRequirementForm.html");
+     
     }
+    
+    
+    @PostMapping("submitJobRequirement")
+    public String showJobRequirementForm(@RequestParam String jobTitle , @RequestParam String skills , @RequestParam int experience) throws Exception{
+        s.jobRequirementDetails(jobTitle, skills, experience);
+        return "eyahhhhhhh";
+
+    }
+    
 }
