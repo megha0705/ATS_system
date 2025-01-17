@@ -14,15 +14,20 @@ public class ExtractedDataEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @OneToOne
     @JoinColumn(name = "candidate_id", unique = true) 
     private CandidateEntity can_id;
-     @Column( columnDefinition = "TEXT") 
+    
+    @Column( columnDefinition = "TEXT") 
     private String skills;
+
     @Column( columnDefinition = "TEXT") 
     private String experience;
+
     @Column( columnDefinition = "TEXT") 
     private String project;
+    
     ExtractedDataEntity(){
     }
 

@@ -6,8 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExtractedDataRepo extends JpaRepository<ExtractedDataEntity, Integer> {
-
-    
-
     
 }
