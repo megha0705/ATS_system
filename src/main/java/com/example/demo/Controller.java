@@ -14,7 +14,7 @@ public class Controller {
 
     @Autowired
     service s;
-
+    
     @Autowired
     PdfHandler pdf;
 
@@ -25,12 +25,11 @@ public class Controller {
         return new RedirectView("/jobRequirementForm.html");
      
     }
-    
-    
     @PostMapping("submitJobRequirement")
-    public String showJobRequirementForm(@RequestParam String jobTitle , @RequestParam String skills , @RequestParam int experience) throws Exception{
+    public String submitRequirementForm(@RequestParam String jobTitle , @RequestParam String skills, @RequestParam int experience ){
         s.jobRequirementDetails(jobTitle, skills, experience);
-        return "eyahhhhhhh";
+        
+        return "data submitted succesfully";
 
     }
     
