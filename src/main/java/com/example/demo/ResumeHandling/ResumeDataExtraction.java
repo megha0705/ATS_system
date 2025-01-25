@@ -1,5 +1,8 @@
 package com.example.demo.ResumeHandling;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +23,15 @@ public class ResumeDataExtraction {
         String skill = skillExtraction(resume);
         s.candidateSkills(skill);
        System.out.println(skill);
+
+       String company_name = companyExtraction(resume);
+       System.out.println(company_name);
+
+       String job_title = jobTitleExtraction(resume);
+       System.out.println(job_title);
+
+       double years = yearsExtraction(resume);
+       System.out.println(years);
     }
 
     public String skillExtraction(String text){
@@ -32,40 +44,55 @@ public class ResumeDataExtraction {
         }
         return String.join(", ", skills);
     }
-/* 
+ 
     public String companyExtraction(String text){
-        StringBuilder company_name = new StringBuilder();
-        Pattern pattern = Pattern.compile("[A-Za-z ]+\s(Ltd|Inc|Corporation|LLC|Pvt Ltd|GmbH)");
+        Set<String> company_name = new TreeSet<>();
+        Pattern pattern = Pattern.compile("\\b([A-Za-z0-9&'\"\\-\\s]+)\\s?(Ltd|Inc|Corporation|LLC|Pvt\\sLtd|GmbH|Limited|Group)\\b", Pattern.CASE_INSENSITIVE);
     
         Matcher matcher = pattern.matcher(text);
         while(matcher.find()){
-            company_name.append(matcher.group()).append(" ");
-        }
-        return company_name.toString();
+            company_name.add(matcher.group());
+
+            }
+            
+            
+        
+        return String.join(", ", company_name);
     }
 
     
     public String jobTitleExtraction(String text){
-        StringBuilder jobTitle = new StringBuilder();
-        Pattern pattern = Pattern.compile("(Intern|Software Engineer|Developer|Lead|Manager|Engineer)\\s*");
+        Set<String> jobTitle = new TreeSet<>();
+        Pattern pattern = Pattern.compile("\\b(intern|software\\sengineer|developer|lead|manager)\\b");
+
     
         Matcher matcher = pattern.matcher(text);
         while(matcher.find()){
-            jobTitle.append(matcher.group()).append(" ");
+            jobTitle.add(matcher.group());
         }
-        return jobTitle.toString();
+        return String.join(", ", jobTitle);
     }
 
-  
-    public String yearsExtraction(String text){
-        StringBuilder years = new StringBuilder();
-        Pattern pattern = Pattern.compile("(Intern|Software Engineer|Developer|Lead|Manager|Engineer)\\s*");
+    public double yearsExtraction(String text){
+        Set<String> years = new TreeSet<>();
+        Pattern pattern = Pattern.compile("(\\w+ \\d{4})\\s*–\\s*(\\w+ \\d{4})");
     
         Matcher matcher = pattern.matcher(text);
+        double inYears = 0;
         while(matcher.find()){
-            years.append(matcher.group()).append(" ");
+            String startDate = matcher.group(1).toUpperCase();
+            String endDate = matcher.group(2).toUpperCase();
+            //this is will convert it to a localDate object
+            DateTimeFormatter formatted = DateTimeFormatter.ofPattern("MMM yyyy");
+            //this is will convert the date to the localdate object jun 2024 to 2024-05-
+             YearMonth startDateformatted =  YearMonth.parse(startDate,formatted);
+             YearMonth endDateFormatted =  YearMonth.parse(endDate  ,formatted);
+            long monthsDifference = java.time.temporal.ChronoUnit.MONTHS.between(startDateformatted, endDateFormatted);
+            double experience = monthsDifference/12.0;
+            inYears += experience;
+
         }
-        return jobTitle.toString();
-    }*/
+        return inYears;
+    }
 
 }
