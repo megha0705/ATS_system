@@ -5,24 +5,36 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.CandidateDatabase.CandidateSkills;
+import com.example.demo.CandidateDatabase.PersonalDetails;
+import com.example.demo.CandidateRepository.CandidateSkillRepo;
+import com.example.demo.CandidateRepository.PersonalDetailsRepo;
 @Service
 public class ServiceImp implements service  {
-    @Autowired
-    CandidateRepo repo;
-
+   @Autowired
+    PersonalDetailsRepo personal_repo;
     @Autowired
     ExtractedDataRepo exRepo;
+    @Autowired
+    CandidateSkillRepo skill_Repo;
 
     @Autowired
     JobRequirementRepo requirement;
+
+    @Autowired
+    MatchingData m;
     public ServiceImp() {
         System.out.println("ServiceImp Constructor - Beans Injected");
     }
     public void candidateDetail(String name , String email){
-        CandidateEntity entity = new CandidateEntity();
-        entity.setEmailAddress(email);
-        entity.setFullName(name);
-        repo.save(entity);
+       
+        PersonalDetails pd = new PersonalDetails();
+        pd.setCandidate_email(email);
+        pd.setCandidate_name(name);
+        personal_repo.save(pd);
+       
+       
+       
            
     }
 
@@ -49,6 +61,21 @@ public class ServiceImp implements service  {
         cEntity.setSkill(skills);
         cEntity.setExperience(experience);
         requirement.save(cEntity);
+        if(m.matchingRequirements(cEntity.getId())){
+            System.out.println("AHHHHHHHHHHHHHHHHHHHHH");
+        }else{
+            System.out.println("nahhhhhhhhhhhhhhhhhhhhhhh");
+        }
+    }
+    @Override
+    public void candidateSkills(String skills) {
+        // TODO Auto-generated method stub
+       PersonalDetails pd = new PersonalDetails();
+       CandidateSkills skill = new CandidateSkills();
+   
+      skill.setSkill_name(skills);
+       skill.setCandidate_id(pd);
+       skill_Repo.save(skill);
 
     }
 
