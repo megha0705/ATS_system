@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.CandidateDatabase.CandidateExperience;
 import com.example.demo.CandidateDatabase.CandidateSkills;
 import com.example.demo.CandidateDatabase.PersonalDetails;
+import com.example.demo.CandidateRepository.CandidateEducationRepo;
+import com.example.demo.CandidateRepository.CandidateExperienceRepo;
 import com.example.demo.CandidateRepository.CandidateSkillRepo;
 import com.example.demo.CandidateRepository.PersonalDetailsRepo;
 @Service
@@ -17,7 +20,8 @@ public class ServiceImp implements service  {
     ExtractedDataRepo exRepo;
     @Autowired
     CandidateSkillRepo skill_Repo;
-
+    @Autowired
+    CandidateExperienceRepo experienceRepo;
     @Autowired
     JobRequirementRepo requirement;
 
@@ -77,6 +81,15 @@ public class ServiceImp implements service  {
        skill.setCandidate_id(pd);
        skill_Repo.save(skill);
 
+    }
+    @Override
+    public void candidateExperience(String job_title, String company_name, double months_of_experience) {
+        // TODO Auto-generated method stub
+       CandidateExperience can_exp = new CandidateExperience();
+       can_exp.setCompany_name(company_name);
+       can_exp.setJob_title(job_title);
+       can_exp.setMonths_of_experience(months_of_experience);
+       experienceRepo.save(can_exp);
     }
 
    
