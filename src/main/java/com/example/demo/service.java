@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.CandidateDatabase.PersonalDetails;
+
 
 public interface service {
     void candidateDetail(String name , String email);
