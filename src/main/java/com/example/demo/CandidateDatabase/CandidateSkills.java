@@ -13,8 +13,8 @@ public class CandidateSkills {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int skill_id;
-    @OneToOne
-    @JoinColumn(name = "candidate_id", unique = true) 
+    @OneToOne 
     private  PersonalDetails candidate_id;
+    @Column(length =  500)
     private String skill_name;
 }

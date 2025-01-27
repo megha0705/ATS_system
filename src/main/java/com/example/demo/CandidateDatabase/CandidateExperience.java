@@ -18,5 +18,5 @@ public class CandidateExperience {
     private PersonalDetails candidate_id;
     private String job_title;
     private String company_name;
-    private int years_of_experience;
+    private double months_of_experience;
 }
