@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.CandidateDatabase.CandidateEducation;
 import com.example.demo.CandidateDatabase.CandidateExperience;
 import com.example.demo.CandidateDatabase.CandidateSkills;
 import com.example.demo.CandidateDatabase.PersonalDetails;
@@ -16,46 +17,96 @@ import com.example.demo.CandidateRepository.PersonalDetailsRepo;
 public class ServiceImp implements service  {
    @Autowired
     PersonalDetailsRepo personal_repo;
-    @Autowired
-    ExtractedDataRepo exRepo;
+    
     @Autowired
     CandidateSkillRepo skill_Repo;
+
+    @Autowired
+    CandidateEducationRepo edu_repo;
+
     @Autowired
     CandidateExperienceRepo experienceRepo;
+
     @Autowired
     JobRequirementRepo requirement;
 
-    @Autowired
-    MatchingData m;
+    /*@Autowired
+    MatchingData m;*/
+    
     public ServiceImp() {
         System.out.println("ServiceImp Constructor - Beans Injected");
     }
+
+    int real_can_id = 0;
+
+    //PERSONAL DETAILS
+
     public void candidateDetail(String name , String email){
        
         PersonalDetails pd = new PersonalDetails();
+        
         pd.setCandidate_email(email);
         pd.setCandidate_name(name);
+        
         personal_repo.save(pd);
-       
-       
-       
-           
+
+        real_can_id = pd.getCandidate_id();
     }
+
+    //SKILLS
 
     @Override
-    public void ExtractedDataResume(String skills, String experience, String projects) {
-        if(exRepo != null){
-            System.out.println("ExtractedDataRepo injected correctly!");
-        }else{
-            System.out.println("error injecting");
-        }
-        ExtractedDataEntity entity = new ExtractedDataEntity();
-        entity.setExperience(experience);
-        entity.setProjects(projects);
-        entity.setSkill(skills);
-        exRepo.save(entity); 
+    public void candidateSkills(String skills) {
+
+       CandidateSkills skill = new CandidateSkills();
+                   
+       PersonalDetails pd = personal_repo.findById(real_can_id).orElse(null); 
+
+       if(pd == null){
+        System.out.println("personal details object iis null" + real_can_id);
+       }
+
+       skill.setSkill_name(skills);
+       skill.setCandidate_id(pd);
+
+       skill_Repo.save(skill);
 
     }
+
+    //EXPERIENCE
+
+    @Override
+    public void candidateExperience(String job_title, String company_name, double months_of_experience) {
+        
+       CandidateExperience can_exp = new CandidateExperience();
+
+       PersonalDetails pd = personal_repo.findById(real_can_id).orElse(null); 
+
+       can_exp.setCompany_name(company_name);
+       can_exp.setJob_title(job_title);
+       can_exp.setMonths_of_experience(months_of_experience);
+       can_exp.setCandidate_id(pd);
+
+       experienceRepo.save(can_exp);
+    }
+
+    //EDUCATION
+
+    @Override
+    public void candidateEducation(String degree_name) {
+        CandidateEducation can_edu = new CandidateEducation();
+
+        PersonalDetails pd = personal_repo.findById(real_can_id).orElse(null); 
+
+        can_edu.setDegree_name(degree_name);
+        can_edu.setCandidate_id(pd);
+
+        edu_repo.save(can_edu);
+       
+    }
+
+   
+ /*  
 
     @Override
     public void jobRequirementDetails(String jobTitle, String skills, int experience) {
@@ -70,27 +121,5 @@ public class ServiceImp implements service  {
         }else{
             System.out.println("nahhhhhhhhhhhhhhhhhhhhhhh");
         }
-    }
-    @Override
-    public void candidateSkills(String skills) {
-        // TODO Auto-generated method stub
-       PersonalDetails pd = new PersonalDetails();
-       CandidateSkills skill = new CandidateSkills();
-   
-      skill.setSkill_name(skills);
-       skill.setCandidate_id(pd);
-       skill_Repo.save(skill);
-
-    }
-    @Override
-    public void candidateExperience(String job_title, String company_name, double months_of_experience) {
-        // TODO Auto-generated method stub
-       CandidateExperience can_exp = new CandidateExperience();
-       can_exp.setCompany_name(company_name);
-       can_exp.setJob_title(job_title);
-       can_exp.setMonths_of_experience(months_of_experience);
-       experienceRepo.save(can_exp);
-    }
-
-   
+    }*/
 }
