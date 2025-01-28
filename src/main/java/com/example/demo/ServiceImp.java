@@ -2,6 +2,9 @@ package com.example.demo;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,9 @@ import com.example.demo.CandidateRepository.CandidateEducationRepo;
 import com.example.demo.CandidateRepository.CandidateExperienceRepo;
 import com.example.demo.CandidateRepository.CandidateSkillRepo;
 import com.example.demo.CandidateRepository.PersonalDetailsRepo;
+import com.example.demo.DataMatching.AllDataMatching;
+import com.example.demo.EmployerDB.JobRequirementEntity;
+import com.example.demo.EmployerDB.JobRequirementRepo;
 @Service
 public class ServiceImp implements service  {
    @Autowired
@@ -28,8 +34,10 @@ public class ServiceImp implements service  {
     CandidateExperienceRepo experienceRepo;
 
     @Autowired
-    JobRequirementRepo requirement;
+    JobRequirementRepo  job_repo;
 
+    @Autowired
+    AllDataMatching dataMatch;
     /*@Autowired
     MatchingData m;*/
 
@@ -56,20 +64,27 @@ public class ServiceImp implements service  {
     //SKILLS
 
     @Override
-    public void candidateSkills(String skills) {
+    public void candidateSkills(ArrayList<String> skills) {
 
-       CandidateSkills skill = new CandidateSkills();
+       
                    
        PersonalDetails pd = personal_repo.findById(real_can_id).orElse(null); 
 
        if(pd == null){
         System.out.println("personal details object iis null" + real_can_id);
        }
-
-       skill.setSkill_name(skills);
-       skill.setCandidate_id(pd);
-
-       skill_Repo.save(skill);
+       //List<String> existingSkills = skill_Repo.findSkillNameByCandidateId(real_can_id);
+       ArrayList<CandidateSkills> cans = new ArrayList<>();
+       for(String skill1 : skills){
+       
+            CandidateSkills skill = new CandidateSkills();
+            skill.setSkillName(skill1);
+            skill.setCandidateId(pd);
+            cans.add(skill);
+        
+      
+       }
+       skill_Repo.saveAll(cans);
 
     }
 
@@ -103,6 +118,22 @@ public class ServiceImp implements service  {
 
         edu_repo.save(can_edu);
        
+    }
+
+    @Override
+    public void jobRequirementDetails(String jobTitle, String skills, int experience, String degree) {
+       JobRequirementEntity job_entity = new JobRequirementEntity();
+
+       job_entity.setJobTitle(jobTitle);
+       job_entity.setDegree(degree);
+       job_entity.setExperience_inMonths(experience);
+       job_entity.setSkill(skills.toLowerCase());
+       
+       job_repo.save(job_entity);
+
+       dataMatch.matchingRequirements(job_entity.getId());
+       System.out.println("id has send succcesfully");
+
     }
 
    
