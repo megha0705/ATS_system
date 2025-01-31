@@ -26,5 +26,8 @@ public class PersonalDetails {
     private String candidate_email;
     @OneToMany(mappedBy = "candidateId", cascade = CascadeType.ALL)
     private List<CandidateSkills> candidateSkills;
-
+    @OneToMany(mappedBy =  "candidate_id", cascade = CascadeType.ALL)
+    private List<CandidateExperience> candidateExperience;
+    @OneToMany(mappedBy = "candidate_id" , cascade = CascadeType.ALL)
+    private List<CandidateEducation> candidateEducation;
 }
