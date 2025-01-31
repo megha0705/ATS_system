@@ -1,5 +1,8 @@
 package com.example.demo.ResumeHandling;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.service;
@@ -22,7 +25,10 @@ public class ResumeDataExtraction {
     public void dataExtraction(String resume){
         //SKILLS
         String skill = sd.skillExtraction(resume);
-        s.candidateSkills(skill);
+        String skillArray [] = skill.split("\\s*,\\s*");
+
+        ArrayList<String> skills = new ArrayList<>(Arrays.asList(skillArray));
+        s.candidateSkills(skills);
         
         //EXPERIENCE
        String company_name = exd.companyExtraction(resume);
@@ -32,7 +38,10 @@ public class ResumeDataExtraction {
 
       //DEGREEE
        String eduDegree = ed.educationDegreeExtraction(resume);
-       s.candidateEducation(eduDegree);
+       String eduArray[] = eduDegree.split("\\s*,\\s*");
+
+       ArrayList<String> eduList = new ArrayList<>(Arrays.asList(eduArray));
+       s.candidateEducation(eduList);
 
 
        System.out.println(skill );
