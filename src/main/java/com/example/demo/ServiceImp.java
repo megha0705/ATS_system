@@ -17,6 +17,7 @@ import com.example.demo.CandidateRepository.CandidateExperienceRepo;
 import com.example.demo.CandidateRepository.CandidateSkillRepo;
 import com.example.demo.CandidateRepository.PersonalDetailsRepo;
 import com.example.demo.DataMatching.AllDataMatching;
+//import com.example.demo.DataMatching.AllDataMatching;
 import com.example.demo.EmployerDB.JobRequirementEntity;
 import com.example.demo.EmployerDB.JobRequirementRepo;
 @Service
@@ -36,7 +37,7 @@ public class ServiceImp implements service  {
     @Autowired
     JobRequirementRepo  job_repo;
 
-    @Autowired
+   @Autowired
     AllDataMatching dataMatch;
     /*@Autowired
     MatchingData m;*/
@@ -108,20 +109,25 @@ public class ServiceImp implements service  {
     //EDUCATION
 
     @Override
-    public void candidateEducation(String degree_name) {
-        CandidateEducation can_edu = new CandidateEducation();
+    public void candidateEducation(ArrayList<String> degree_name) {
+       
 
         PersonalDetails pd = personal_repo.findById(real_can_id).orElse(null); 
+        ArrayList<CandidateEducation> candidateEduList = new ArrayList<>();
+        for(String degree : degree_name){
+            CandidateEducation can_edu = new CandidateEducation();
+            can_edu.setDegree_name(degree);
+            can_edu.setCandidate_id(pd);
+            candidateEduList.add(can_edu);
+        }
+        
 
-        can_edu.setDegree_name(degree_name);
-        can_edu.setCandidate_id(pd);
-
-        edu_repo.save(can_edu);
+        edu_repo.saveAll(candidateEduList);
        
     }
 
     @Override
-    public void jobRequirementDetails(String jobTitle, String skills, int experience, String degree) {
+    public List<String> jobRequirementDetails(String jobTitle, String skills, int experience, String degree) {
        JobRequirementEntity job_entity = new JobRequirementEntity();
 
        job_entity.setJobTitle(jobTitle);
@@ -131,11 +137,12 @@ public class ServiceImp implements service  {
        
        job_repo.save(job_entity);
 
-       dataMatch.matchingRequirements(job_entity.getId());
+      List<String> candidateNames = dataMatch.matchingRequirements(job_entity.getId());
        System.out.println("id has send succcesfully");
+       return candidateNames;
 
     }
-
+    
    
  /*  
 
