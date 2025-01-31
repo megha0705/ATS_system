@@ -12,7 +12,7 @@ public class CandidateEducation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int edu_id;
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "candidate_id", unique = true) 
   private PersonalDetails candidate_id;
   private String degree_name;
