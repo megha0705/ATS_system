@@ -13,8 +13,9 @@ public class CandidateSkills {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int skill_id;
-    @OneToOne 
-    private  PersonalDetails candidate_id;
+    
+    @ManyToOne
+    private  PersonalDetails candidateId;
     @Column(length =  500)
-    private String skill_name;
+    private String skillName;
 }
