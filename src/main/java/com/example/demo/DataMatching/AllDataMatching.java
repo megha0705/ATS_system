@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.CandidateDatabase.CandidateSkills;
 import com.example.demo.CandidateDatabase.PersonalDetails;
 import com.example.demo.CandidateRepository.CandidateSkillRepo;
+import com.example.demo.CandidateRepository.PersonalDetailsRepo;
 import com.example.demo.EmployerDB.JobRequirementEntity;
 import com.example.demo.EmployerDB.JobRequirementRepo;
 import java.util.*;
@@ -15,30 +16,23 @@ public class AllDataMatching {
     CandidateSkillRepo skill_repo;
     @Autowired
     JobRequirementRepo job_repo;
-    public void matchingRequirements(int job_id){
+    @Autowired
+    PersonalDetailsRepo personal_repo;
+    public List<String> matchingRequirements(int job_id){
       
         
         JobRequirementEntity job_entity = job_repo.findById(job_id)
         .orElseThrow(() -> new IllegalArgumentException("JOB ID IS - >"+ job_id+" "+"it is null") );
-        String individualSkill[] = job_entity.getSkill().split(",");
-        ArrayList<ArrayList<CandidateSkills>> candidates = new ArrayList<>();
-        for(int i = 0; i < individualSkill.length; i++){
-            ArrayList<CandidateSkills> candidate = skill_repo.findBySkillNameContaining(individualSkill[i]);
-            candidates.add(candidate);
-        }
 
-       
-        System.out.println("this is the job id" + job_id);
-        System.out.println("this is the job entity skills " + job_entity.getSkill());
-        System.out.println("candidate skill isssssss" + candidates);
-        for(CandidateSkills can : candidates){
-            if(can.getSkillName().contains(job_entity.getSkill())){
-                System.out.println("here is the list of personaldetails"   + can.getCandidateId());
-            }else{
-                System.out.println("noo it does not contain anything");
-            }
-         
-        }
-       
+       String []jobArray = job_entity.getSkill().split("\\s*,\\s*");
+
+       List<String> skillList = new ArrayList<>(Arrays.asList(jobArray));
+    
+       List<String> can_names = personal_repo.findByCandidateExperienceAndSkillsAndEducation(job_entity.getJobTitle(),job_entity.getExperience_inMonths(),skillList, job_entity.getDegree());
+       for(String name : can_names){
+        System.out.println("THE NAME OF THE CANDIDATE  WITH THAT EXPERIENCE and  SKILL IS ->" +  name);
+       }
+
+       return can_names;
     }
 }
