@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Candidates</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .no-results {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Matching Candidates</h2>
+
+    <div class="container">
+        <div id="noResults" class="no-results" style="display: none;">
+            No matching candidates found.
+        </div>
+
+        <table id="candidateTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Candidate Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamically populated rows will go here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function loadCandidates() {
+            // Retrieve stored candidate names from sessionStorage
+            const storedCandidates = sessionStorage.getItem("candidates");
+            const candidates = storedCandidates ? JSON.parse(storedCandidates) : [];
+            const table = document.getElementById("candidateTable");
+            const tbody = table.querySelector("tbody");
+            const noResults = document.getElementById("noResults");
+
+            if (candidates.length > 0) {
+                candidates.forEach(name => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td>${name}</td>`;
+                    tbody.appendChild(row);
+                });
+
+                table.style.display = "table";
+            } else {
+                noResults.style.display = "block";
+            }
+        }
+
+        // Load candidates when the page loads
+        window.onload = loadCandidates;
+    </script>
+
+</body>
+</html>
